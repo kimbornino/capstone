@@ -7,5 +7,6 @@ namespace Capstone.Models
 {
     public class Markets
     {
+        public string Market Name
     }
 }
