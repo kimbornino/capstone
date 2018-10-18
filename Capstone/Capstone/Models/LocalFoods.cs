@@ -14,29 +14,13 @@ namespace Capstone.Models
 
         public string FoodName { get; set; }
 
-        public bool January { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public bool February { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public bool March { get; set; }
+        public string FoodImage { get; set; }
 
-        public bool April { get; set; }
-
-        public bool May { get; set; }
-
-        public bool June { get; set; }
-
-        public bool July { get; set; }
-
-        public bool August { get; set; }
-
-        public bool September { get; set; }
-
-        public bool October { get; set; }
-
-        public bool Novemebr { get; set; }
-
-        public bool December { get; set; }
+        public string NutritionalInfo { get; set; }
         
     }
 }
