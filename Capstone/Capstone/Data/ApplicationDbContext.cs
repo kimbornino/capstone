@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Capstone.Models;
 
 namespace Capstone.Data
 {
@@ -12,5 +13,8 @@ namespace Capstone.Data
             : base(options)
         {
         }
+        public DbSet<Capstone.Models.Recipes> Recipes { get; set; }
+        public DbSet<Capstone.Models.LocalFoods> LocalFoods { get; set; }
+        public DbSet<Capstone.Models.MealPlans> MealPlans { get; set; }
     }
 }
