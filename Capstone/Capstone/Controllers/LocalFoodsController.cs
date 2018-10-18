@@ -54,7 +54,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFoods localFoods)
+        public async Task<IActionResult> Create([Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo,SearchTerm")] LocalFoods localFoods)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFoods localFoods)
+        public async Task<IActionResult> Edit(int id, [Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo,SearchTerm")] LocalFoods localFoods)
         {
             if (id != localFoods.FoodID)
             {
