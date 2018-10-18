@@ -17,7 +17,7 @@ namespace Capstone.Models
         public string DayOfWeek { get; set; }
 
         [ForeignKey("Recipe")]
-        public int RecipeMatchID { get; set; }
+        public int RecipeID{ get; set; }
         public RecipeMatch Recipe { get; set; }
         
        public IEnumerable<Recipes> Recipes { get; set; }

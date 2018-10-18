@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Capstone.Models.Recipes>
+﻿@model IEnumerable<Capstone.Models.MealPlans>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,61 +13,53 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.DayOfWeek)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ingreients)
+                @Html.DisplayNameFor(model => model.Recipe)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.KeyIngredient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Directions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servings)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NutritionalInfo)
+                @Html.DisplayNameFor(model => model.ApplicationUser)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ingreients)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KeyIngredient.RecipeMatchID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Directions)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Servings)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NutritionalInfo)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>
-                    @*//add something here to save to meal plan*@
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recipe.RecipeMatchID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem =>item.SearchTerm)
+                <select id="Select1">
+                    <option>Sweet Potatoes</option>
+                    <option>Yams</option>
+                    <option>Corn</option>
+
+                </select>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MealPlanID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MealPlanID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MealPlanID">Delete</a>
+            </td>
+
+        </tr>
+}
     </tbody>
 </table>
