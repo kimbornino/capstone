@@ -68,7 +68,7 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.RecipeMatchID);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
@@ -86,7 +86,7 @@ namespace Capstone.Controllers
                 return NotFound();
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.RecipeMatchID);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
@@ -123,7 +123,7 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.RecipeMatchID);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
