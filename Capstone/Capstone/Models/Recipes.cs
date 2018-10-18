@@ -19,13 +19,15 @@ namespace Capstone.Models
         public string Ingreients { get; set; }
 
         [ForeignKey("KeyIngredient")]
-        public int RecipeMatch {get;set;}
+        [Display(Name = "Seasonal Ingredient")]
+        public int? RecipeMatch {get;set;}
         public RecipeMatch KeyIngredient { get; set; }
         
         public string Directions { get; set; }
 
         public string Servings { get; set; }
 
+        [Display(Name = "Ingredients")]
         public string NutritionalInfo { get; set; }
 
         public string Image { get; set; }
