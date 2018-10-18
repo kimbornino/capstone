@@ -22,14 +22,13 @@ namespace Capstone.Models
         public int RecipeMatch {get;set;}
         public RecipeMatch KeyIngredient { get; set; }
         
-
         public string Directions { get; set; }
 
         public string Servings { get; set; }
 
         public string NutritionalInfo { get; set; }
 
-
+        public string Image { get; set; }
        
     }
 }

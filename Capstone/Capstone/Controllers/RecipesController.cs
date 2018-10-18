@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capstone.Data;
 using Capstone.Models;
+using System.IO;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Capstone.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment he;
+        
 
-        public RecipesController(ApplicationDbContext context)
+        public RecipesController(ApplicationDbContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
         }
 
         // GET: Recipes
@@ -155,6 +162,36 @@ namespace Capstone.Controllers
         private bool RecipesExists(int id)
         {
             return _context.Recipes.Any(e => e.RecipeID == id);
+        }
+        public IActionResult UploadImage(IFormFile pic, int RecipeID)
+        {
+
+            if (pic == null)
+            {
+                return View();
+            }
+
+            if (pic != null)
+            {
+                var fullPath = Path.Combine(he.WebRootPath, Path.GetFileName(pic.FileName));
+
+                var fileName = pic.FileName;
+
+                pic.CopyTo(new FileStream(fullPath, FileMode.Create));
+
+                var recipe = _context.Recipes
+                    .FirstOrDefault(m => m.RecipeID == RecipeID);
+
+                recipe.Image = fileName;
+                _context.Update(recipe);
+                _context.SaveChangesAsync();
+
+                ViewBag.ProfileImage = recipe.Image;
+
+                ViewData["FileLocation"] = "/" + Path.GetFileName(pic.FileName);
+            }
+          
+            return View();
         }
     }
 }
