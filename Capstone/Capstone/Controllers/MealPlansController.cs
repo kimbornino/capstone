@@ -59,7 +59,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId")] MealPlans mealPlans)
+        public async Task<IActionResult> Create([Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId,SearchTerm")] MealPlans mealPlans)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId")] MealPlans mealPlans)
+        public async Task<IActionResult> Edit(int id, [Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId,SearchTerm")] MealPlans mealPlans)
         {
             if (id != mealPlans.MealPlanID)
             {

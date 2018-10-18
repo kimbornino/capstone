@@ -8,6 +8,7 @@
 
 <h4>MealPlans</h4>
 <hr />
+<table style="width:100%;"><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -21,8 +22,19 @@
                 <label asp-for="DayOfWeek" class="control-label"></label>
                 <input asp-for="DayOfWeek" class="form-control" />
                 <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+                <select id="Select1">
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+
+                </select>
             </div>
             <div class="form-group">
+                <
                 <label asp-for="RecipeMatchID" class="control-label"></label>
                 <select asp-for="RecipeMatchID" class ="form-control" asp-items="ViewBag.RecipeMatchID"></select>
             </div>

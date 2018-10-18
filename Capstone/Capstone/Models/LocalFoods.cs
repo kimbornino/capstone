@@ -26,8 +26,5 @@ namespace Capstone.Models
         [Display(Name = "Nutritional Information")]
         public string NutritionalInfo { get; set; }
 
-        [Display(Name = "Search For Recipes")]
-        public string SearchTerm { get; set; }
-
     }
 }

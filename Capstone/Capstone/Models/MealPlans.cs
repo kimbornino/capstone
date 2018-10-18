@@ -26,5 +26,8 @@ namespace Capstone.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        [Display(Name = "Search For Recipes")]
+        public string SearchTerm { get; set; }
+
     }
 }
