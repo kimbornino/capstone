@@ -13,7 +13,7 @@ namespace Capstone.Models
         public int RecipeID { get; set; }
 
         public string Name { get; set; }
-        //should be drop down main course, side dish, drink, dessert
+
         public string Category { get; set; }
 
         public string Ingreients { get; set; }
