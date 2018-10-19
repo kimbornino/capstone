@@ -27,7 +27,7 @@ namespace Capstone.Models
 
         public string Servings { get; set; }
 
-        [Display(Name = "Ingredients")]
+        [Display(Name = "Nutritional Information")]
         public string NutritionalInfo { get; set; }
 
         public string Image { get; set; }

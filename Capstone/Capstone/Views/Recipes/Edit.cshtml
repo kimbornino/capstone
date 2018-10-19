@@ -20,8 +20,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
+                @*<input asp-for="Category" class="form-control" />*@
                 <span asp-validation-for="Category" class="text-danger"></span>
+                <select asp-for="Category" id="SelectRecipeType">
+                    <option>Main Dish</option>
+                    <option>Side</option>
+                    <option>Dessert</option>
+                    <option>Drink</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Ingreients" class="control-label"></label>
