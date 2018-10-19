@@ -16,5 +16,6 @@ namespace Capstone.Data
         public DbSet<Capstone.Models.Recipes> Recipes { get; set; }
         public DbSet<Capstone.Models.LocalFoods> LocalFoods { get; set; }
         public DbSet<Capstone.Models.MealPlans> MealPlans { get; set; }
+        public DbSet<Capstone.Models.MessageBoard> MessageBoard { get; set; }
     }
 }

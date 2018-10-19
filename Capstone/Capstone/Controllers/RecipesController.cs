@@ -64,7 +64,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image")] Recipes recipes)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo, Image")] Recipes recipes)
         {
             if (id != recipes.RecipeID)
             {
@@ -163,7 +163,7 @@ namespace Capstone.Controllers
         {
             return _context.Recipes.Any(e => e.RecipeID == id);
         }
-        public IActionResult UploadImage(IFormFile pic, int RecipeID)
+        public IActionResult UploadImage(IFormFile pic, Recipes recipes)
         {
 
             if (pic == null)
@@ -179,10 +179,11 @@ namespace Capstone.Controllers
 
                 pic.CopyTo(new FileStream(fullPath, FileMode.Create));
 
-                var recipe = _context.Recipes
-                    .FirstOrDefault(m => m.RecipeID == RecipeID);
+
+                var recipe = recipes;
 
                 recipe.Image = fileName;
+
                 _context.Update(recipe);
                 _context.SaveChangesAsync();
 

@@ -39,6 +39,10 @@ namespace Capstone.Controllers
         {
             return View();
         }
+        public IActionResult MessageBoard()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
