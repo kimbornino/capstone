@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Recipe Index</h2>
+<h2>Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,11 +25,15 @@
                 @Html.DisplayNameFor(model => model.KeyIngredient)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Directions)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NutritionalInfo)
             </th>
+         
             <th></th>
         </tr>
     </thead>
@@ -48,18 +52,24 @@
             <td>
                 @Html.DisplayFor(modelItem => item.KeyIngredient.RecipeMatchID)
             </td>
-           
+            <td>
+                @Html.DisplayFor(modelItem => item.Directions)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Servings)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NutritionalInfo)
             </td>
-            @Html.HiddenFor(modelItem => item.Directions)
+            
+
+            @Html.HiddenFor(modelItem => item.Image)
+            @Html.HiddenFor(modelItem => item.ApplicationUser.Id)
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> 
-                @*<a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>*@
+                <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>
             </td>
         </tr>
 }

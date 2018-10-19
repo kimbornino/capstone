@@ -28,6 +28,7 @@
                     <option>Drink</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="Ingreients" class="control-label"></label>
                 <input asp-for="Ingreients" class="form-control" />
@@ -35,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="RecipeMatch" class="control-label"></label>
-                <select asp-for="RecipeMatch" class ="form-control" asp-items="ViewBag.RecipeMatch"></select>
+                <select asp-for="RecipeMatch" class="form-control" asp-items="ViewBag.RecipeMatch"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Directions" class="control-label"></label>
@@ -43,6 +44,8 @@
                 <span asp-validation-for="Directions" class="text-danger"></span>
                 <textarea asp-for="Directions" id="RecipeDirections" rows="2" cols="20"></textarea>
             </div>
+
+
             <div class="form-group">
                 <label asp-for="Servings" class="control-label"></label>
                 <input asp-for="Servings" class="form-control" />
@@ -53,9 +56,17 @@
                 <input asp-for="NutritionalInfo" class="form-control" />
                 <span asp-validation-for="NutritionalInfo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+          
+            @*@<div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>*@
+                @Html.HiddenFor(model => model.ApplicationUserId)
+                @Html.HiddenFor(model => model.Image)
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
         </form>
     </div>
 </div>
@@ -65,6 +76,3 @@
     <a asp-action="UploadImage">Add a Picture</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

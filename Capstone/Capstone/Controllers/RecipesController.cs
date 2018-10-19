@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capstone.Data;
 using Capstone.Models;
-using System.IO;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Capstone.Controllers
 {
@@ -18,18 +19,19 @@ namespace Capstone.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment he;
-        
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public RecipesController(ApplicationDbContext context, IHostingEnvironment e)
+        public RecipesController(ApplicationDbContext context, IHostingEnvironment e, UserManager<IdentityUser> userManager)
         {
             _context = context;
             he = e;
+            _userManager = userManager;
         }
 
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Recipes.Include(r => r.KeyIngredient);
+            var applicationDbContext = _context.Recipes.Include(r => r.ApplicationUser).Include(r => r.KeyIngredient);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -42,6 +44,7 @@ namespace Capstone.Controllers
             }
 
             var recipes = await _context.Recipes
+                .Include(r => r.ApplicationUser)
                 .Include(r => r.KeyIngredient)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
             if (recipes == null)
@@ -55,6 +58,7 @@ namespace Capstone.Controllers
         // GET: Recipes/Create
         public IActionResult Create()
         {
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
             ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID");
             return View();
         }
@@ -64,7 +68,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +76,7 @@ namespace Capstone.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
             ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
@@ -89,6 +94,7 @@ namespace Capstone.Controllers
             {
                 return NotFound();
             }
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
             ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
@@ -98,7 +104,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo, Image")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (id != recipes.RecipeID)
             {
@@ -125,6 +131,7 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
             ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
@@ -138,6 +145,7 @@ namespace Capstone.Controllers
             }
 
             var recipes = await _context.Recipes
+                .Include(r => r.ApplicationUser)
                 .Include(r => r.KeyIngredient)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
             if (recipes == null)
@@ -163,9 +171,8 @@ namespace Capstone.Controllers
         {
             return _context.Recipes.Any(e => e.RecipeID == id);
         }
-        public IActionResult UploadImage(IFormFile pic, Recipes recipes)
+        public IActionResult UploadImage(IFormFile pic, int id)
         {
-
             if (pic == null)
             {
                 return View();
@@ -174,25 +181,23 @@ namespace Capstone.Controllers
             if (pic != null)
             {
                 var fullPath = Path.Combine(he.WebRootPath, Path.GetFileName(pic.FileName));
-
                 var fileName = pic.FileName;
-
                 pic.CopyTo(new FileStream(fullPath, FileMode.Create));
 
-
-                var recipe = recipes;
+                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var recipe = _context.Recipes
+                    .FirstOrDefault(m => m.ApplicationUserId == userid);
 
                 recipe.Image = fileName;
-
                 _context.Update(recipe);
                 _context.SaveChangesAsync();
 
                 ViewBag.ProfileImage = recipe.Image;
-
                 ViewData["FileLocation"] = "/" + Path.GetFileName(pic.FileName);
             }
-          
+
             return View();
         }
+
     }
 }

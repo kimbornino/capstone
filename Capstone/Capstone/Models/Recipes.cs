@@ -20,9 +20,9 @@ namespace Capstone.Models
 
         [ForeignKey("KeyIngredient")]
         [Display(Name = "Seasonal Ingredient")]
-        public int? RecipeMatch {get;set;}
+        public int? RecipeMatch { get; set; }
         public RecipeMatch KeyIngredient { get; set; }
-        
+
         public string Directions { get; set; }
 
         public string Servings { get; set; }
@@ -31,6 +31,9 @@ namespace Capstone.Models
         public string NutritionalInfo { get; set; }
 
         public string Image { get; set; }
-       
+
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

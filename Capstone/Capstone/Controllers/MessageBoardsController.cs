@@ -12,11 +12,13 @@ namespace Capstone.Controllers
 {
     public class MessageBoardsController : Controller
     {
+        public DateTime WhenCreated { get; set; }
         private readonly ApplicationDbContext _context;
 
         public MessageBoardsController(ApplicationDbContext context)
         {
             _context = context;
+            WhenCreated = DateTime.Now;
         }
 
         // GET: MessageBoards
