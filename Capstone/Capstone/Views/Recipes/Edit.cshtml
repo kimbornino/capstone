@@ -41,8 +41,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Directions" class="control-label"></label>
-                <input asp-for="Directions" class="form-control" />
+                @*<input asp-for="Directions" class="form-control" />*@
                 <span asp-validation-for="Directions" class="text-danger"></span>
+                <textarea asp-for="Directions" id="RecipeDirections" rows="2" cols="20"></textarea>
             </div>
             <div class="form-group">
                 <label asp-for="Servings" class="control-label"></label>
