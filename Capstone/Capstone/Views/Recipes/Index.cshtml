@@ -25,9 +25,6 @@
                 @Html.DisplayNameFor(model => model.KeyIngredient)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Directions)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
             <th>
@@ -48,21 +45,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Ingreients)
             </td>
-                @Html.DisplayFor(modelItem => item.KeyIngredient.RecipeMatchID)
-           
             <td>
-                @Html.DisplayFor(modelItem => item.Directions)
-                
+                @Html.DisplayFor(modelItem => item.KeyIngredient.RecipeMatchID)
             </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Servings)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NutritionalInfo)
             </td>
+            @Html.HiddenFor(modelItem => item.Directions)
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
+                <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> 
                 @*<a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>*@
             </td>
         </tr>
