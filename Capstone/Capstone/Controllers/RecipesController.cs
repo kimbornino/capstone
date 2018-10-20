@@ -26,12 +26,13 @@ namespace Capstone.Controllers
             _context = context;
             he = e;
             _userManager = userManager;
-        }
+            }
+        
 
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Recipes.Include(r => r.ApplicationUser).Include(r => r.KeyIngredient);
+            var applicationDbContext = _context.Recipes.Include(r => r.ApplicationUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -45,7 +46,6 @@ namespace Capstone.Controllers
 
             var recipes = await _context.Recipes
                 .Include(r => r.ApplicationUser)
-                .Include(r => r.KeyIngredient)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
             if (recipes == null)
             {
@@ -59,7 +59,6 @@ namespace Capstone.Controllers
         public IActionResult Create()
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
-            ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID");
             return View();
         }
 
@@ -68,7 +67,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +76,6 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
 
@@ -95,7 +93,6 @@ namespace Capstone.Controllers
                 return NotFound();
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
 
@@ -104,7 +101,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,RecipeMatch,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (id != recipes.RecipeID)
             {
@@ -132,7 +129,6 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            ViewData["RecipeMatch"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", recipes.RecipeMatch);
             return View(recipes);
         }
 
@@ -146,7 +142,7 @@ namespace Capstone.Controllers
 
             var recipes = await _context.Recipes
                 .Include(r => r.ApplicationUser)
-                .Include(r => r.KeyIngredient)
+                .Include(r => r.SeasonalIngredient)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
             if (recipes == null)
             {
@@ -171,7 +167,7 @@ namespace Capstone.Controllers
         {
             return _context.Recipes.Any(e => e.RecipeID == id);
         }
-        public IActionResult UploadImage(IFormFile pic, int id)
+        public IActionResult UploadImage(IFormFile pic, int? id)
         {
             if (pic == null)
             {
@@ -184,9 +180,10 @@ namespace Capstone.Controllers
                 var fileName = pic.FileName;
                 pic.CopyTo(new FileStream(fullPath, FileMode.Create));
 
-                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var recipe = _context.Recipes
-                    .FirstOrDefault(m => m.ApplicationUserId == userid);
+                string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
+                
+                //var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
 
                 recipe.Image = fileName;
                 _context.Update(recipe);

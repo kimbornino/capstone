@@ -4,16 +4,14 @@ using Capstone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Capstone.Data.Migrations
+namespace Capstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181019200818_new recipe model")]
-    partial class newrecipemodel
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +33,13 @@ namespace Capstone.Data.Migrations
 
                     b.Property<string>("NutritionalInfo");
 
+                    b.Property<int?>("RecipesRecipeID");
+
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("FoodID");
+
+                    b.HasIndex("RecipesRecipeID");
 
                     b.ToTable("LocalFoods");
                 });
@@ -92,13 +94,15 @@ namespace Capstone.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FeaturedIngredient");
-
                     b.Property<int>("FoodID");
+
+                    b.Property<int>("SeasonalIngredient");
 
                     b.HasKey("RecipeMatchID");
 
                     b.HasIndex("FoodID");
+
+                    b.HasIndex("SeasonalIngredient");
 
                     b.ToTable("RecipeMatch");
                 });
@@ -125,7 +129,7 @@ namespace Capstone.Data.Migrations
 
                     b.Property<string>("NutritionalInfo");
 
-                    b.Property<int?>("RecipeMatch");
+                    b.Property<int>("SeasonalIngredient");
 
                     b.Property<string>("Servings");
 
@@ -134,10 +138,6 @@ namespace Capstone.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("MealPlansMealPlanID");
-
-                    b.HasIndex("RecipeMatch")
-                        .IsUnique()
-                        .HasFilter("[RecipeMatch] IS NOT NULL");
 
                     b.ToTable("Recipes");
                 });
@@ -323,6 +323,13 @@ namespace Capstone.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
+            modelBuilder.Entity("Capstone.Models.LocalFoods", b =>
+                {
+                    b.HasOne("Capstone.Models.Recipes")
+                        .WithMany("LocalFoods")
+                        .HasForeignKey("RecipesRecipeID");
+                });
+
             modelBuilder.Entity("Capstone.Models.MealPlans", b =>
                 {
                     b.HasOne("Capstone.Models.ApplicationUser", "ApplicationUser")
@@ -341,6 +348,11 @@ namespace Capstone.Data.Migrations
                         .WithMany()
                         .HasForeignKey("FoodID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Capstone.Models.Recipes", "FeaturedIngredient")
+                        .WithMany()
+                        .HasForeignKey("SeasonalIngredient")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Capstone.Models.Recipes", b =>
@@ -352,10 +364,6 @@ namespace Capstone.Data.Migrations
                     b.HasOne("Capstone.Models.MealPlans")
                         .WithMany("Recipes")
                         .HasForeignKey("MealPlansMealPlanID");
-
-                    b.HasOne("Capstone.Models.RecipeMatch", "KeyIngredient")
-                        .WithOne("KeyIngredient")
-                        .HasForeignKey("Capstone.Models.Recipes", "RecipeMatch");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -29,9 +29,9 @@
                 <span asp-validation-for="Ingreients" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RecipeMatch" class="control-label"></label>
-                <select asp-for="RecipeMatch" class="form-control" asp-items="ViewBag.RecipeMatch"></select>
-                <span asp-validation-for="RecipeMatch" class="text-danger"></span>
+                <label asp-for="SeasonalIngredient" class="control-label"></label>
+                <select asp-for="SeasonalIngredient" class="form-control"> </select>
+                <span asp-validation-for="SeasonalIngredient" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Directions" class="control-label"></label>
@@ -48,24 +48,18 @@
                 <input asp-for="NutritionalInfo" class="form-control" />
                 <span asp-validation-for="NutritionalInfo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApplicationUserId" class="control-label"></label>
-                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
-                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
-            </div>
+         
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
+    @Html.HiddenFor(model => model.Image)
+    @Html.HiddenFor(model => model.ApplicationUserId)
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> |
+    <a asp-action="UploadImage">Add a Picture</a>
 </div>
 

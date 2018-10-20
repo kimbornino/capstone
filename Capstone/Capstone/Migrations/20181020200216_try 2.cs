@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Capstone.Data.Migrations
+namespace Capstone.Migrations
 {
-    public partial class initmigration : Migration
+    public partial class try2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

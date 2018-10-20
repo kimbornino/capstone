@@ -17,7 +17,7 @@ namespace Capstone.Models
         public LocalFoods Food { get; set; }
 
         [ForeignKey("FeaturedIngredient")]
-        public string FeaturedIngredient { get; set; }
-        public Recipes KeyIngredient { get; set; }
+        public int SeasonalIngredient { get; set; }
+        public Recipes FeaturedIngredient { get; set; }
     }
 }

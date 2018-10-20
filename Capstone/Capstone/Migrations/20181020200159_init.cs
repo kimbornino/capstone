@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Capstone.Data.Migrations
+namespace Capstone.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,25 +26,60 @@ namespace Capstone.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    Discriminator = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocalFoods",
+                columns: table => new
+                {
+                    FoodID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FoodName = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    FoodImage = table.Column<string>(nullable: true),
+                    NutritionalInfo = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocalFoods", x => x.FoodID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessageBoard",
+                columns: table => new
+                {
+                    MessageBoardID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Topic = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageBoard", x => x.MessageBoardID);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +188,89 @@ namespace Capstone.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MealPlans",
+                columns: table => new
+                {
+                    MealPlanID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    DayOfWeek = table.Column<string>(nullable: true),
+                    RecipeID = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    SearchTerm = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealPlans", x => x.MealPlanID);
+                    table.ForeignKey(
+                        name: "FK_MealPlans_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    RecipeID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Ingreients = table.Column<string>(nullable: true),
+                    SeasonalIngredient = table.Column<int>(nullable: false),
+                    Directions = table.Column<string>(nullable: true),
+                    Servings = table.Column<string>(nullable: true),
+                    NutritionalInfo = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    MealPlansMealPlanID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.RecipeID);
+                    table.ForeignKey(
+                        name: "FK_Recipes_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Recipes_MealPlans_MealPlansMealPlanID",
+                        column: x => x.MealPlansMealPlanID,
+                        principalTable: "MealPlans",
+                        principalColumn: "MealPlanID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeMatch",
+                columns: table => new
+                {
+                    RecipeMatchID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FoodID = table.Column<int>(nullable: false),
+                    SeasonalIngredient = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeMatch", x => x.RecipeMatchID);
+                    table.ForeignKey(
+                        name: "FK_RecipeMatch_LocalFoods_FoodID",
+                        column: x => x.FoodID,
+                        principalTable: "LocalFoods",
+                        principalColumn: "FoodID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeMatch_Recipes_SeasonalIngredient",
+                        column: x => x.SeasonalIngredient,
+                        principalTable: "Recipes",
+                        principalColumn: "RecipeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,10 +309,60 @@ namespace Capstone.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealPlans_ApplicationUserId",
+                table: "MealPlans",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealPlans_RecipeID",
+                table: "MealPlans",
+                column: "RecipeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeMatch_FoodID",
+                table: "RecipeMatch",
+                column: "FoodID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeMatch_SeasonalIngredient",
+                table: "RecipeMatch",
+                column: "SeasonalIngredient");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_ApplicationUserId",
+                table: "Recipes",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_MealPlansMealPlanID",
+                table: "Recipes",
+                column: "MealPlansMealPlanID");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_MealPlans_RecipeMatch_RecipeID",
+                table: "MealPlans",
+                column: "RecipeID",
+                principalTable: "RecipeMatch",
+                principalColumn: "RecipeMatchID",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_MealPlans_AspNetUsers_ApplicationUserId",
+                table: "MealPlans");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Recipes_AspNetUsers_ApplicationUserId",
+                table: "Recipes");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_MealPlans_RecipeMatch_RecipeID",
+                table: "MealPlans");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -211,10 +379,25 @@ namespace Capstone.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "MessageBoard");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "RecipeMatch");
+
+            migrationBuilder.DropTable(
+                name: "LocalFoods");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
+
+            migrationBuilder.DropTable(
+                name: "MealPlans");
         }
     }
 }
