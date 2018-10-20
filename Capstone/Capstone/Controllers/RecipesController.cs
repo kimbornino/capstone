@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capstone.Data;
 using Capstone.Models;
-using Microsoft.AspNetCore.Http;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace Capstone.Controllers
 {
@@ -26,8 +26,8 @@ namespace Capstone.Controllers
             _context = context;
             he = e;
             _userManager = userManager;
-            }
-        
+        }
+
 
         // GET: Recipes
         public async Task<IActionResult> Index()
@@ -67,7 +67,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
         {
             if (id != recipes.RecipeID)
             {
@@ -142,7 +142,6 @@ namespace Capstone.Controllers
 
             var recipes = await _context.Recipes
                 .Include(r => r.ApplicationUser)
-                .Include(r => r.SeasonalIngredient)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
             if (recipes == null)
             {
@@ -182,7 +181,7 @@ namespace Capstone.Controllers
 
                 string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
-                
+
                 //var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
 
                 recipe.Image = fileName;
@@ -195,6 +194,5 @@ namespace Capstone.Controllers
 
             return View();
         }
-
     }
 }

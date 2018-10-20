@@ -19,7 +19,7 @@ namespace Capstone.Models
         public string Ingreients { get; set; }
 
         [Display(Name = "Seasonal Ingredient")]
-        public int SeasonalIngredient { get; set; }
+        public string SeasonalIngredient { get; set; }
 
         public string Directions { get; set; }
 
