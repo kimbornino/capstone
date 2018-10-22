@@ -18,9 +18,9 @@ namespace Capstone.Models
 
         [ForeignKey("Recipe")]
         public int RecipeID{ get; set; }
-        public RecipeMatch Recipe { get; set; }
+        public Recipe Recipe { get; set; }
         
-       public IEnumerable<Recipes> Recipes { get; set; }
+       public IEnumerable<Recipe> Recipes { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }

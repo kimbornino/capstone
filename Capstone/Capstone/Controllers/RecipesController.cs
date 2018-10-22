@@ -67,7 +67,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId,Save")] Recipe recipes)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId,Save")] Recipe recipes)
         {
             if (id != recipes.RecipeID)
             {
@@ -194,5 +194,6 @@ namespace Capstone.Controllers
 
             return View();
         }
+
     }
 }

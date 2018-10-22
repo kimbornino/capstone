@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class LocalFoods
+    public class LocalFood
     {
 
         [Key]

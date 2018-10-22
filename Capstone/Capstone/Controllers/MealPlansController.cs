@@ -50,7 +50,7 @@ namespace Capstone.Controllers
         public IActionResult Create()
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID");
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
@@ -86,7 +86,7 @@ namespace Capstone.Controllers
                 return NotFound();
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
@@ -123,7 +123,7 @@ namespace Capstone.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<RecipeMatch>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
+            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
             return View(mealPlans);
         }
 
@@ -161,6 +161,11 @@ namespace Capstone.Controllers
         private bool MealPlansExists(int id)
         {
             return _context.MealPlans.Any(e => e.MealPlanID == id);
+        }
+        public IActionResult SearchByIngredient()
+        {
+
+            return View();
         }
     }
 }

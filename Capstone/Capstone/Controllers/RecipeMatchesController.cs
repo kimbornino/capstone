@@ -36,7 +36,7 @@ namespace Capstone.Controllers
 
             var recipeMatch = await _context.RecipeMatch
                 .Include(r => r.Food)
-                .FirstOrDefaultAsync(m => m.RecipeMatchID == id);
+                .FirstOrDefaultAsync(m => m.LocalFoodRecipeID == id);
             if (recipeMatch == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeMatchID,FoodID,FeaturedIngredient")] RecipeMatch recipeMatch)
+        public async Task<IActionResult> Create([Bind("RecipeMatchID,FoodID,FeaturedIngredient")] LocalFoodRecipe recipeMatch)
         {
             if (ModelState.IsValid)
             {
@@ -91,9 +91,9 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeMatchID,FoodID,FeaturedIngredient")] RecipeMatch recipeMatch)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeMatchID,FoodID,FeaturedIngredient")] LocalFoodRecipe recipeMatch)
         {
-            if (id != recipeMatch.RecipeMatchID)
+            if (id != recipeMatch.LocalFoodRecipeID)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace Capstone.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeMatchExists(recipeMatch.RecipeMatchID))
+                    if (!RecipeMatchExists(recipeMatch.LocalFoodRecipeID))
                     {
                         return NotFound();
                     }
@@ -132,7 +132,7 @@ namespace Capstone.Controllers
 
             var recipeMatch = await _context.RecipeMatch
                 .Include(r => r.Food)
-                .FirstOrDefaultAsync(m => m.RecipeMatchID == id);
+                .FirstOrDefaultAsync(m => m.LocalFoodRecipeID == id);
             if (recipeMatch == null)
             {
                 return NotFound();
@@ -154,7 +154,7 @@ namespace Capstone.Controllers
 
         private bool RecipeMatchExists(int id)
         {
-            return _context.RecipeMatch.Any(e => e.RecipeMatchID == id);
+            return _context.RecipeMatch.Any(e => e.LocalFoodRecipeID == id);
         }
     }
 }

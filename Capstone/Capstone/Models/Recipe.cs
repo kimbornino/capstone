@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class Recipes
+    public class Recipe
     {
         [Key]
         public int RecipeID { get; set; }
@@ -34,8 +34,7 @@ namespace Capstone.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public IEnumerable<LocalFoods> LocalFoods { get; set; }
-
+        public IEnumerable<LocalFood> LocalFoods { get; set; }
         
     }
 }

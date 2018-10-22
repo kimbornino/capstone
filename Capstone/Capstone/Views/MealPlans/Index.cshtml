@@ -21,9 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Recipe)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -37,24 +37,18 @@
                 @Html.DisplayFor(modelItem => item.DayOfWeek)
                 
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Recipe.RecipeMatchID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
+            </td>*@
+            @Html.HiddenFor(modelItem => item.ApplicationUser.Id)
+            @Html.HiddenFor(modelItem => item.Recipe.RecipeID)
+            
             
             <td>
-                @Html.DisplayFor(modelItem =>item.SearchTerm)
-                <select id="Select1">
-                    <option>Sweet Potatoes</option>
-                    <option>Yams</option>
-                    <option>Corn</option>
-
-                </select>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MealPlanID">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.MealPlanID">Add Recipe</a> |
                 <a asp-action="Details" asp-route-id="@item.MealPlanID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.MealPlanID">Delete</a>
             </td>

@@ -1,10 +1,10 @@
-﻿@model Capstone.Models.Recipes
+﻿@model Capstone.Models.Recipe
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Full Recipe";
 }
 
-<h2>Details</h2>
+<h2></h2>
 
 <div>
     <h4>Recipes</h4>
@@ -63,7 +63,9 @@
     <img src="~/@Model.Image" height="250px" width="300px" />
 
 </dd>
+<input id="SaveRecipe" type="button" value="Save to Meal Plan" />
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RecipeID">Edit</a> |
     <a asp-action="Index">Back to List</a>
+    
 </div>

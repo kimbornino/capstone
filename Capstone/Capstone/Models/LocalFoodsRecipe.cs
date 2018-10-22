@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class RecipeMatch
+    public class LocalFoodRecipe
     {
         [Key]
-        public int RecipeMatchID { get; set; }
+        public int LocalFoodRecipeID { get; set; }
 
         [ForeignKey("Food")]
         public int FoodID { get; set; }
-        public LocalFoods Food { get; set; }
+        public LocalFood Food { get; set; }
 
         [ForeignKey("FeaturedIngredient")]
-        public int SeasonalIngredient { get; set; }
-        public Recipes FeaturedIngredient { get; set; }
+        //rename to recipe ID
+        public int RecipeID { get; set; }
+        public Recipe Recipe { get; set; }
     }
 }
