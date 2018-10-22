@@ -1,14 +1,14 @@
 ﻿@using (Html.BeginForm())
 {
+    <p>Enter One or Two Digit Month</p>
     <form method="post" action="/LocalFoods/SearchByMonth">
         
             <label for="month">month</label>
             <input type="text" name="month" />
 
-        
         <br /><button type="submit">Submit</button>
     </form>
-    @*<form asp-action="SearchByMonth">
+    @*<form asp-action="SearchByMonth" name="month" />
         <div class="form-group">
             <select asp-for="Months">
                 <option value="01">01</option>

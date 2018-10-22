@@ -164,23 +164,22 @@ namespace Capstone.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SearchByMonth(string month)
+        public IActionResult SearchByMonth(int month)
         {
-            var selectedIds = Request.Form["months"];
-            if (month != "00")
+            if (month != 0)
             {
 
-                //var FoodByMonth = _context.LocalFoods.Where(m => m.StartDate.Month == month || m.EndDate.Month == month);
+                var FoodByMonth = _context.LocalFoods.Where(m => m.StartDate.Month <= month && m.EndDate.Month <= month);
 
 
-            return View();
+                return View("Index", FoodByMonth);
             }
-            //else
-            //{
-            //    return View("Index");
+            else
+            {
+                return View("Index");
 
-            //}
-            return View();
+            }
+            
         }
 
 
