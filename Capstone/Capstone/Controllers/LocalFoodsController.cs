@@ -22,8 +22,20 @@ namespace Capstone.Controllers
         // GET: LocalFoods
         public IActionResult Index()
         {
-            var SeasonalSelection = _context.LocalFoods.Where(m => m.EndDate > DateTime.Now && m.StartDate < DateTime.Now);
-            return View(SeasonalSelection);
+            ////let user search by month
+            //Search = "December";
+
+            //if (Search != null) 
+            //{
+           
+            //    return View();
+            //}
+            
+            //else
+            //{
+                var SeasonalSelection = _context.LocalFoods.Where(m => m.EndDate > DateTime.Now && m.StartDate < DateTime.Now);
+                return View(SeasonalSelection);
+            //}
         }
 
         // GET: LocalFoods/Details/5
@@ -145,6 +157,32 @@ namespace Capstone.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        //Get
+        public IActionResult SearchByMonth()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SearchByMonth(string month)
+        {
+            var selectedIds = Request.Form["months"];
+            if (month != "00")
+            {
+
+                //var FoodByMonth = _context.LocalFoods.Where(m => m.StartDate.Month == month || m.EndDate.Month == month);
+
+
+            return View();
+            }
+            //else
+            //{
+            //    return View("Index");
+
+            //}
+            return View();
+        }
+
 
         private bool LocalFoodExists(int id)
         {
