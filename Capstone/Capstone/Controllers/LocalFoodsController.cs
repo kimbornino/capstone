@@ -20,9 +20,10 @@ namespace Capstone.Controllers
         }
 
         // GET: LocalFoods
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.LocalFoods.ToListAsync());
+            var SeasonalSelection = _context.LocalFoods.Where(m => m.EndDate > DateTime.Now && m.StartDate < DateTime.Now);
+            return View(SeasonalSelection);
         }
 
         // GET: LocalFoods/Details/5
@@ -33,14 +34,14 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var localFoods = await _context.LocalFoods
+            var localFood = await _context.LocalFoods
                 .FirstOrDefaultAsync(m => m.FoodID == id);
-            if (localFoods == null)
+            if (localFood == null)
             {
                 return NotFound();
             }
 
-            return View(localFoods);
+            return View(localFood);
         }
 
         // GET: LocalFoods/Create
@@ -54,15 +55,15 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFood localFoods)
+        public async Task<IActionResult> Create([Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFood localFood)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(localFoods);
+                _context.Add(localFood);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(localFoods);
+            return View(localFood);
         }
 
         // GET: LocalFoods/Edit/5
@@ -73,12 +74,12 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var localFoods = await _context.LocalFoods.FindAsync(id);
-            if (localFoods == null)
+            var localFood = await _context.LocalFoods.FindAsync(id);
+            if (localFood == null)
             {
                 return NotFound();
             }
-            return View(localFoods);
+            return View(localFood);
         }
 
         // POST: LocalFoods/Edit/5
@@ -86,9 +87,9 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFood localFoods)
+        public async Task<IActionResult> Edit(int id, [Bind("FoodID,FoodName,StartDate,EndDate,FoodImage,NutritionalInfo")] LocalFood localFood)
         {
-            if (id != localFoods.FoodID)
+            if (id != localFood.FoodID)
             {
                 return NotFound();
             }
@@ -97,12 +98,12 @@ namespace Capstone.Controllers
             {
                 try
                 {
-                    _context.Update(localFoods);
+                    _context.Update(localFood);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocalFoodsExists(localFoods.FoodID))
+                    if (!LocalFoodExists(localFood.FoodID))
                     {
                         return NotFound();
                     }
@@ -113,7 +114,7 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(localFoods);
+            return View(localFood);
         }
 
         // GET: LocalFoods/Delete/5
@@ -124,14 +125,14 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var localFoods = await _context.LocalFoods
+            var localFood = await _context.LocalFoods
                 .FirstOrDefaultAsync(m => m.FoodID == id);
-            if (localFoods == null)
+            if (localFood == null)
             {
                 return NotFound();
             }
 
-            return View(localFoods);
+            return View(localFood);
         }
 
         // POST: LocalFoods/Delete/5
@@ -139,13 +140,13 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var localFoods = await _context.LocalFoods.FindAsync(id);
-            _context.LocalFoods.Remove(localFoods);
+            var localFood = await _context.LocalFoods.FindAsync(id);
+            _context.LocalFoods.Remove(localFood);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LocalFoodsExists(int id)
+        private bool LocalFoodExists(int id)
         {
             return _context.LocalFoods.Any(e => e.FoodID == id);
         }

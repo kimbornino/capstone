@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Models
 {
-    public class MealPlans
+    public class DailyMealPlan
     {
         [Key]
         public int MealPlanID {get; set;}
@@ -20,14 +20,9 @@ namespace Capstone.Models
         public int RecipeID{ get; set; }
         public Recipe Recipe { get; set; }
         
-       public IEnumerable<Recipe> Recipes { get; set; }
-
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-
-        [Display(Name = "Search For Recipes")]
-        public string SearchTerm { get; set; }
 
     }
 }

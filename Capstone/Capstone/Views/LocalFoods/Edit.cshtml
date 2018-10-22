@@ -1,4 +1,4 @@
-﻿@model Capstone.Models.LocalFoods
+﻿@model Capstone.Models.LocalFood
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<h4>LocalFoods</h4>
+<h4>LocalFood</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -49,6 +49,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

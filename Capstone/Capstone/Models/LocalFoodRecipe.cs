@@ -12,12 +12,11 @@ namespace Capstone.Models
         [Key]
         public int LocalFoodRecipeID { get; set; }
 
-        [ForeignKey("Food")]
-        public int FoodID { get; set; }
-        public LocalFood Food { get; set; }
+        [ForeignKey("Ingredient")]
+        public int LocalFoodID { get; set; }
+        public LocalFood LocalFoods { get; set; }
 
-        [ForeignKey("FeaturedIngredient")]
-        //rename to recipe ID
+        [ForeignKey("Recipe")]
         public int RecipeID { get; set; }
         public Recipe Recipe { get; set; }
     }

@@ -7,27 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capstone.Data;
 using Capstone.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using System.IO;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 
 namespace Capstone.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHostingEnvironment he;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public RecipesController(ApplicationDbContext context, IHostingEnvironment e, UserManager<IdentityUser> userManager)
+        public RecipesController(ApplicationDbContext context)
         {
             _context = context;
-            he = e;
-            _userManager = userManager;
         }
-
 
         // GET: Recipes
         public async Task<IActionResult> Index()
@@ -44,15 +34,15 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var recipes = await _context.Recipes
+            var recipe = await _context.Recipes
                 .Include(r => r.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
-            if (recipes == null)
+            if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(recipes);
+            return View(recipe);
         }
 
         // GET: Recipes/Create
@@ -67,16 +57,16 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId,Save")] Recipe recipes)
+        public async Task<IActionResult> Create([Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(recipes);
+                _context.Add(recipe);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            return View(recipes);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipe.ApplicationUserId);
+            return View(recipe);
         }
 
         // GET: Recipes/Edit/5
@@ -87,13 +77,13 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var recipes = await _context.Recipes.FindAsync(id);
-            if (recipes == null)
+            var recipe = await _context.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            return View(recipes);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipe.ApplicationUserId);
+            return View(recipe);
         }
 
         // POST: Recipes/Edit/5
@@ -101,9 +91,9 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,SeasonalIngredient,Directions,Servings,NutritionalInfo,Image,ApplicationUserId,Save")] Recipe recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeID,Name,Category,Ingreients,Directions,Servings,NutritionalInfo,Image,ApplicationUserId")] Recipe recipe)
         {
-            if (id != recipes.RecipeID)
+            if (id != recipe.RecipeID)
             {
                 return NotFound();
             }
@@ -112,12 +102,12 @@ namespace Capstone.Controllers
             {
                 try
                 {
-                    _context.Update(recipes);
+                    _context.Update(recipe);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipesExists(recipes.RecipeID))
+                    if (!RecipeExists(recipe.RecipeID))
                     {
                         return NotFound();
                     }
@@ -128,8 +118,8 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipes.ApplicationUserId);
-            return View(recipes);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", recipe.ApplicationUserId);
+            return View(recipe);
         }
 
         // GET: Recipes/Delete/5
@@ -140,15 +130,15 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var recipes = await _context.Recipes
+            var recipe = await _context.Recipes
                 .Include(r => r.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.RecipeID == id);
-            if (recipes == null)
+            if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(recipes);
+            return View(recipe);
         }
 
         // POST: Recipes/Delete/5
@@ -156,44 +146,15 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipes = await _context.Recipes.FindAsync(id);
-            _context.Recipes.Remove(recipes);
+            var recipe = await _context.Recipes.FindAsync(id);
+            _context.Recipes.Remove(recipe);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipesExists(int id)
+        private bool RecipeExists(int id)
         {
             return _context.Recipes.Any(e => e.RecipeID == id);
         }
-        public IActionResult UploadImage(IFormFile pic, int? id)
-        {
-            if (pic == null)
-            {
-                return View();
-            }
-
-            if (pic != null)
-            {
-                var fullPath = Path.Combine(he.WebRootPath, Path.GetFileName(pic.FileName));
-                var fileName = pic.FileName;
-                pic.CopyTo(new FileStream(fullPath, FileMode.Create));
-
-                string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
-
-                //var recipe = _context.Recipes.Where(m => m.ApplicationUserId == userid).FirstOrDefault();
-
-                recipe.Image = fileName;
-                _context.Update(recipe);
-                _context.SaveChangesAsync();
-
-                ViewBag.ProfileImage = recipe.Image;
-                ViewData["FileLocation"] = "/" + Path.GetFileName(pic.FileName);
-            }
-
-            return View();
-        }
-
     }
 }

@@ -10,23 +10,23 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
-    public class MealPlansController : Controller
+    public class DailyMealPlansController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MealPlansController(ApplicationDbContext context)
+        public DailyMealPlansController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MealPlans
+        // GET: DailyMealPlans
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MealPlans.Include(m => m.ApplicationUser).Include(m => m.Recipe);
+            var applicationDbContext = _context.MealPlans.Include(d => d.ApplicationUser).Include(d => d.Recipe);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: MealPlans/Details/5
+        // GET: DailyMealPlans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,45 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var mealPlans = await _context.MealPlans
-                .Include(m => m.ApplicationUser)
-                .Include(m => m.Recipe)
+            var dailyMealPlan = await _context.MealPlans
+                .Include(d => d.ApplicationUser)
+                .Include(d => d.Recipe)
                 .FirstOrDefaultAsync(m => m.MealPlanID == id);
-            if (mealPlans == null)
+            if (dailyMealPlan == null)
             {
                 return NotFound();
             }
 
-            return View(mealPlans);
+            return View(dailyMealPlan);
         }
 
-        // GET: MealPlans/Create
+        // GET: DailyMealPlans/Create
         public IActionResult Create()
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID");
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeID");
             return View();
         }
 
-        // POST: MealPlans/Create
+        // POST: DailyMealPlans/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId,SearchTerm")] MealPlans mealPlans)
+        public async Task<IActionResult> Create([Bind("MealPlanID,Date,DayOfWeek,RecipeID,ApplicationUserId")] DailyMealPlan dailyMealPlan)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealPlans);
+                _context.Add(dailyMealPlan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
-            return View(mealPlans);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", dailyMealPlan.ApplicationUserId);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeID", dailyMealPlan.RecipeID);
+            return View(dailyMealPlan);
         }
 
-        // GET: MealPlans/Edit/5
+        // GET: DailyMealPlans/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +80,24 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var mealPlans = await _context.MealPlans.FindAsync(id);
-            if (mealPlans == null)
+            var dailyMealPlan = await _context.MealPlans.FindAsync(id);
+            if (dailyMealPlan == null)
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
-            return View(mealPlans);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", dailyMealPlan.ApplicationUserId);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeID", dailyMealPlan.RecipeID);
+            return View(dailyMealPlan);
         }
 
-        // POST: MealPlans/Edit/5
+        // POST: DailyMealPlans/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MealPlanID,Date,DayOfWeek,RecipeMatchID,ApplicationUserId,SearchTerm")] MealPlans mealPlans)
+        public async Task<IActionResult> Edit(int id, [Bind("MealPlanID,Date,DayOfWeek,RecipeID,ApplicationUserId")] DailyMealPlan dailyMealPlan)
         {
-            if (id != mealPlans.MealPlanID)
+            if (id != dailyMealPlan.MealPlanID)
             {
                 return NotFound();
             }
@@ -106,12 +106,12 @@ namespace Capstone.Controllers
             {
                 try
                 {
-                    _context.Update(mealPlans);
+                    _context.Update(dailyMealPlan);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealPlansExists(mealPlans.MealPlanID))
+                    if (!DailyMealPlanExists(dailyMealPlan.MealPlanID))
                     {
                         return NotFound();
                     }
@@ -122,12 +122,12 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", mealPlans.ApplicationUserId);
-            ViewData["RecipeMatchID"] = new SelectList(_context.Set<LocalFoodRecipe>(), "RecipeMatchID", "RecipeMatchID", mealPlans.Recipe);
-            return View(mealPlans);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", dailyMealPlan.ApplicationUserId);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeID", dailyMealPlan.RecipeID);
+            return View(dailyMealPlan);
         }
 
-        // GET: MealPlans/Delete/5
+        // GET: DailyMealPlans/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,37 +135,32 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var mealPlans = await _context.MealPlans
-                .Include(m => m.ApplicationUser)
-                .Include(m => m.Recipe)
+            var dailyMealPlan = await _context.MealPlans
+                .Include(d => d.ApplicationUser)
+                .Include(d => d.Recipe)
                 .FirstOrDefaultAsync(m => m.MealPlanID == id);
-            if (mealPlans == null)
+            if (dailyMealPlan == null)
             {
                 return NotFound();
             }
 
-            return View(mealPlans);
+            return View(dailyMealPlan);
         }
 
-        // POST: MealPlans/Delete/5
+        // POST: DailyMealPlans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealPlans = await _context.MealPlans.FindAsync(id);
-            _context.MealPlans.Remove(mealPlans);
+            var dailyMealPlan = await _context.MealPlans.FindAsync(id);
+            _context.MealPlans.Remove(dailyMealPlan);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealPlansExists(int id)
+        private bool DailyMealPlanExists(int id)
         {
             return _context.MealPlans.Any(e => e.MealPlanID == id);
-        }
-        public IActionResult SearchByIngredient()
-        {
-
-            return View();
         }
     }
 }

@@ -16,10 +16,8 @@ namespace Capstone.Models
 
         public string Category { get; set; }
 
+        [Display(Name= "Full Ingredient List")]
         public string Ingreients { get; set; }
-
-        [Display(Name = "Seasonal Ingredient")]
-        public string SeasonalIngredient { get; set; }
 
         public string Directions { get; set; }
 

@@ -22,16 +22,20 @@
                 @Html.DisplayNameFor(model => model.Ingreients)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SeasonalIngredient)
+                @Html.DisplayNameFor(model => model.Directions)
             </th>
-       
             <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NutritionalInfo)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -48,21 +52,20 @@
                 @Html.DisplayFor(modelItem => item.Ingreients)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SeasonalIngredient)
+                @Html.DisplayFor(modelItem => item.Directions)
             </td>
-            
             <td>
                 @Html.DisplayFor(modelItem => item.Servings)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NutritionalInfo)
             </td>
-           
-
-            @Html.HiddenFor(modelItem => item.Image)
-            @Html.HiddenFor(modelItem => item.ApplicationUser.Id)
-            @Html.HiddenFor(modelItem => item.Directions)
-
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |

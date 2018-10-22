@@ -8,7 +8,6 @@ namespace Capstone.Models
 {
     public class LocalFood
     {
-
         [Key]
         public int FoodID { get; set; }
 

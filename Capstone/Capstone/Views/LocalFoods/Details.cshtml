@@ -1,13 +1,13 @@
-﻿@model Capstone.Models.LocalFoods
+﻿@model Capstone.Models.LocalFood
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Food Details</h2>
+<h2>Details</h2>
 
 <div>
-    <h4>LocalFoods</h4>
+    <h4>LocalFood</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,27 +28,21 @@
         <dd>
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.FoodImage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FoodImage)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.NutritionalInfo)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.NutritionalInfo)
         </dd>
-        <dd>
-            @Html.HiddenFor(model => model.FoodImage)
-      
     </dl>
 </div>
-<dd>
-
-    <img src="~/@Model.FoodImage" height="250px" width="300px" />
-
-</dd>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.FoodID">Edit</a> |
     <a asp-action="Index">Back to List</a>
-    @*May need a reminder about how to do pathing..... slashes?  dots?*@
-    <a asp-action="Home/Recipes"> See Recipes</a>
-    
 </div>
