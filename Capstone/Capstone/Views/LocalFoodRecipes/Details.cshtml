@@ -1,0 +1,31 @@
+﻿@model Capstone.Models.LocalFoodRecipe
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "TagIngredient";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LocalFoodRecipe</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalFoods)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocalFoods.FoodID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.RecipeID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.LocalFoodRecipeID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

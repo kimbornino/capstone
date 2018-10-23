@@ -22,7 +22,7 @@ namespace Capstone.Controllers
         // GET: DailyMealPlans
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MealPlans.Include(d => d.ApplicationUser).Include(d => d.Recipe);
+            var applicationDbContext = _context.DailyMealPlans.Include(d => d.ApplicationUser).Include(d => d.Recipe);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var dailyMealPlan = await _context.MealPlans
+            var dailyMealPlan = await _context.DailyMealPlans
                 .Include(d => d.ApplicationUser)
                 .Include(d => d.Recipe)
                 .FirstOrDefaultAsync(m => m.MealPlanID == id);
@@ -80,7 +80,7 @@ namespace Capstone.Controllers
                 return NotFound();
             }
 
-            var dailyMealPlan = await _context.MealPlans.FindAsync(id);
+            var dailyMealPlan = await _context.DailyMealPlans.FindAsync(id);
             if (dailyMealPlan == null)
             {
                 return NotFound();

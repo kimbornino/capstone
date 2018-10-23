@@ -151,6 +151,30 @@ namespace Capstone.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        //get
+        public IActionResult Tag()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Tag(string localFood, int id)
+        {
+            if (localFood != null)
+            {
+                var recipe = _context.Recipes.Where(m => m.RecipeID == id).FirstOrDefault();
+                //var localFoodId = _context.LocalFoods.Where(m => m.FoodID == recipe.LocalFoods.ID).FirstOrDefault();
+                //foreach (var food in _context.LocalFoodRecipes)
+                //{
+
+                //}
+                //_context.LocalFoodRecipes.ReipeId.Add(localFoodId);
+                //_context.LocalFoodRecipes.Add(recipe);
+                
+
+            }
+            return View();
+        }
 
         private bool RecipeExists(int id)
         {

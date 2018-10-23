@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Capstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181022151132_init 3")]
-    partial class init3
+    [Migration("20181023014208_add")]
+    partial class add
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,8 +126,6 @@ namespace Capstone.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("NutritionalInfo");
-
-                    b.Property<string>("SeasonalIngredient");
 
                     b.Property<string>("Servings");
 

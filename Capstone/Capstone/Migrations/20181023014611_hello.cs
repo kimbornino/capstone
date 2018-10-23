@@ -2,7 +2,7 @@
 
 namespace Capstone.Migrations
 {
-    public partial class initmigrate : Migration
+    public partial class hello : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

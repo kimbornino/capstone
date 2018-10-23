@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Capstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181020212038_init migrate")]
-    partial class initmigrate
+    [Migration("20181023014611_hello")]
+    partial class hello
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,32 +21,7 @@ namespace Capstone.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Capstone.Models.LocalFoods", b =>
-                {
-                    b.Property<int>("FoodID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<string>("FoodImage");
-
-                    b.Property<string>("FoodName");
-
-                    b.Property<string>("NutritionalInfo");
-
-                    b.Property<int?>("RecipesRecipeID");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("FoodID");
-
-                    b.HasIndex("RecipesRecipeID");
-
-                    b.ToTable("LocalFoods");
-                });
-
-            modelBuilder.Entity("Capstone.Models.MealPlans", b =>
+            modelBuilder.Entity("Capstone.Models.DailyMealPlan", b =>
                 {
                     b.Property<int>("MealPlanID")
                         .ValueGeneratedOnAdd()
@@ -60,8 +35,6 @@ namespace Capstone.Migrations
 
                     b.Property<int>("RecipeID");
 
-                    b.Property<string>("SearchTerm");
-
                     b.HasKey("MealPlanID");
 
                     b.HasIndex("ApplicationUserId");
@@ -69,6 +42,50 @@ namespace Capstone.Migrations
                     b.HasIndex("RecipeID");
 
                     b.ToTable("MealPlans");
+                });
+
+            modelBuilder.Entity("Capstone.Models.LocalFood", b =>
+                {
+                    b.Property<int>("FoodID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("FoodImage");
+
+                    b.Property<string>("FoodName");
+
+                    b.Property<string>("NutritionalInfo");
+
+                    b.Property<int?>("RecipeID");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("FoodID");
+
+                    b.HasIndex("RecipeID");
+
+                    b.ToTable("LocalFoods");
+                });
+
+            modelBuilder.Entity("Capstone.Models.LocalFoodRecipe", b =>
+                {
+                    b.Property<int>("LocalFoodRecipeID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LocalFoodID");
+
+                    b.Property<int>("RecipeID");
+
+                    b.HasKey("LocalFoodRecipeID");
+
+                    b.HasIndex("LocalFoodID");
+
+                    b.HasIndex("RecipeID");
+
+                    b.ToTable("RecipeMatch");
                 });
 
             modelBuilder.Entity("Capstone.Models.MessageBoard", b =>
@@ -90,26 +107,7 @@ namespace Capstone.Migrations
                     b.ToTable("MessageBoard");
                 });
 
-            modelBuilder.Entity("Capstone.Models.RecipeMatch", b =>
-                {
-                    b.Property<int>("RecipeMatchID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FoodID");
-
-                    b.Property<int>("SeasonalIngredient");
-
-                    b.HasKey("RecipeMatchID");
-
-                    b.HasIndex("FoodID");
-
-                    b.HasIndex("SeasonalIngredient");
-
-                    b.ToTable("RecipeMatch");
-                });
-
-            modelBuilder.Entity("Capstone.Models.Recipes", b =>
+            modelBuilder.Entity("Capstone.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeID")
                         .ValueGeneratedOnAdd()
@@ -125,21 +123,15 @@ namespace Capstone.Migrations
 
                     b.Property<string>("Ingreients");
 
-                    b.Property<int?>("MealPlansMealPlanID");
-
                     b.Property<string>("Name");
 
                     b.Property<string>("NutritionalInfo");
-
-                    b.Property<int>("SeasonalIngredient");
 
                     b.Property<string>("Servings");
 
                     b.HasKey("RecipeID");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("MealPlansMealPlanID");
 
                     b.ToTable("Recipes");
                 });
@@ -325,47 +317,43 @@ namespace Capstone.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Capstone.Models.LocalFoods", b =>
-                {
-                    b.HasOne("Capstone.Models.Recipes")
-                        .WithMany("LocalFoods")
-                        .HasForeignKey("RecipesRecipeID");
-                });
-
-            modelBuilder.Entity("Capstone.Models.MealPlans", b =>
+            modelBuilder.Entity("Capstone.Models.DailyMealPlan", b =>
                 {
                     b.HasOne("Capstone.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Capstone.Models.RecipeMatch", "Recipe")
+                    b.HasOne("Capstone.Models.Recipe", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Capstone.Models.RecipeMatch", b =>
+            modelBuilder.Entity("Capstone.Models.LocalFood", b =>
                 {
-                    b.HasOne("Capstone.Models.LocalFoods", "Food")
+                    b.HasOne("Capstone.Models.Recipe")
+                        .WithMany("LocalFoods")
+                        .HasForeignKey("RecipeID");
+                });
+
+            modelBuilder.Entity("Capstone.Models.LocalFoodRecipe", b =>
+                {
+                    b.HasOne("Capstone.Models.LocalFood", "LocalFoods")
                         .WithMany()
-                        .HasForeignKey("FoodID")
+                        .HasForeignKey("LocalFoodID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Capstone.Models.Recipes", "FeaturedIngredient")
+                    b.HasOne("Capstone.Models.Recipe", "Recipe")
                         .WithMany()
-                        .HasForeignKey("SeasonalIngredient")
+                        .HasForeignKey("RecipeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Capstone.Models.Recipes", b =>
+            modelBuilder.Entity("Capstone.Models.Recipe", b =>
                 {
                     b.HasOne("Capstone.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Capstone.Models.MealPlans")
-                        .WithMany("Recipes")
-                        .HasForeignKey("MealPlansMealPlanID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
